@@ -1,1 +1,1 @@
-web: bin/python -m CGIHTTPServer $PORT
+web: bin/python http.server $PORT
