@@ -1,1 +1,1 @@
-web: bin/python http.server $PORT
+web: bin/python -m http.server $PORT
