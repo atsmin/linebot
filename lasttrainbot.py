@@ -1,12 +1,16 @@
 #! /bin/python
 # -*- coding:utf-8 -*-
 
+import os
 import cgi
 import urllib.request
 import urllib.parse
 from html.parser import HTMLParser
 
-from config import CID, CS, MID
+# from config import CID, CS, MID
+CID = os.environ.get('CID')
+CS = os.environ.get('CS')
+MID = os.environ.get('MID')
 
 
 def check(_from, _to):
