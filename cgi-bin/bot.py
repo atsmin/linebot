@@ -24,7 +24,8 @@ def check(_from, _to):
         def handle_starttag(self, tag, attrs):
             if dict(attrs).get('id') == 'Bk_list_tbody':
                 self.found = True
-def handle_endtag(self, tag):
+
+        def handle_endtag(self, tag):
             if self.found and tag == 'tr':
                 self.found = False
 
