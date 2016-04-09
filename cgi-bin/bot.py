@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 
 import os
-import cgi
+import json
 import urllib.request
 import urllib.parse
 from html.parser import HTMLParser
@@ -42,7 +42,8 @@ def check(_from, _to):
 
 
 def receive():
-    result = cgi.FieldStorage['result'][0]
+    data = json.loads(sys.stdin.read())
+    result = data['result']
     return result['from'], result['content']['text'].split('　')
 
 
