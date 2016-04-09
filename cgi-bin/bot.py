@@ -42,8 +42,8 @@ def check(_from, _to):
 
 
 def receive():
-    result = cgi.FieldStorage().get('result')[0]
-    return result.get['from'], result.get['content'].get['text'].split('　')
+    result = cgi.FieldStorage['result'][0]
+    return result['from'], result['content']['text'].split('　')
 
 
 def reply(user, result):
