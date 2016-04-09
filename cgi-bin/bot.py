@@ -44,7 +44,7 @@ def check(_from, _to):
 
 def receive():
     data = json.loads(sys.stdin.read())
-    result = data['result']
+    result = data['result'][0]
     return result['from'], result['content']['text'].split('　')
 
 
