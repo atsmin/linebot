@@ -24,8 +24,7 @@ def check(_from, _to):
         def handle_starttag(self, tag, attrs):
             if dict(attrs).get('id') == 'Bk_list_tbody':
                 self.found = True
-
-        def handle_endtag(self, tag):
+def handle_endtag(self, tag):
             if self.found and tag == 'tr':
                 self.found = False
 
@@ -66,7 +65,7 @@ def reply(user, result):
     urllib.request.urlopen(url, data, headers)
 
 
-user, _from, _to = receive()
+user, (_from, _to) = receive()
 reply(user, check(_from, _to))
 
 # if __name__ == '__main__':
