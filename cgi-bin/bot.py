@@ -44,7 +44,7 @@ def handle_endtag(self, tag):
 def receive():
     data = json.loads(sys.stdin.read())
     result = data['result'][0]
-    return result['from'], result['content']['text'].split('　')
+    return result['from'], result['content']['text'].split(',')
 
 
 def reply(user, result):
