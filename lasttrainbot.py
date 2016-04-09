@@ -60,9 +60,9 @@ def reply(user, result):
     urllib.request.urlopen(url, data, headers)
 
 
-# user, _from, _to = receive()
-# reply(user, check(_from, _to))
+user, _from, _to = receive()
+reply(user, check(_from, _to))
 
-if __name__ == '__main__':
-    print(check('渋谷', '鶯谷'))
-    print(check('池袋', '上野'))
+# if __name__ == '__main__':
+#     print(check('渋谷', '鶯谷'))
+#     print(check('池袋', '上野'))
