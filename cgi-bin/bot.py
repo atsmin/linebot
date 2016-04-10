@@ -13,6 +13,7 @@ import requests
 CID = os.environ.get('CID')
 CS = os.environ.get('CS')
 MID = os.environ.get('MID')
+PROXY = os.environ.get('PROXY')
 
 
 def check(_from, _to):
@@ -63,8 +64,9 @@ def reply(user, result):
         'eventType': "138311608800106203",  # Fixed value
         'content': result,
     }
+    proxies = {'http': PROXY, 'https': PROXY}
     data = urllib.parse.urlencode(values).encode('utf-8')
-    requests.post(url, data=data, headers=headers)
+    requests.post(url, data=data, headers=headers, proxies=proxies)
 
 
 user, (_from, _to) = receive()
