@@ -9,7 +9,7 @@ from datetime import datetime
 import requests
 import flask
 
-# from config import CID, CS, MID
+# from config import CID, CS, MID, PROXY
 CID = os.environ.get('CID')
 CS = os.environ.get('CS')
 MID = os.environ.get('MID')
@@ -85,6 +85,7 @@ def reply(user, result):
 
 @app.route('/', methods=['POST'])
 def main():
+    print(CID, CS, MID, PROXY)
     user, (_from, _to) = receive()
     print(user, _from, _to)
     ret = check(_from, _to)
