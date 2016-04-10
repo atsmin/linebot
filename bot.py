@@ -4,6 +4,7 @@ import os
 import json
 import urllib.parse
 from html.parser import HTMLParser
+from datetime import datetime
 
 import requests
 import flask
@@ -37,7 +38,15 @@ def check(_from, _to):
                 self.result.append(data)
 
     encode = urllib.parse.quote
-    url = 'http://www.jorudan.co.jp/norikae/cgi/nori.cgi?rf=top&eok1=&eok2=R-&pg=0&eki1={}&Cmap1=&eki2={}&Dym=201604&Ddd=9&Dhh=7&Dmn1=4&Dmn2=4&Cway=3&Cfp=1&Czu=2&S.x=101&S.y=19&S=%E6%A4%9C%E7%B4%A2&Csg=1'.format(encode(_from), encode(_to))
+    now = datetime.now()
+    url = 'http://www.jorudan.co.jp/norikae/cgi/nori.cgi'
+    '?rf=top&eok1=&eok2=R-&pg=0&eki1={0}&Cmap1=&eki2={1}&'
+    'Dym={2}&Ddd={3}&Dhh={4}&Dmn1={5}&Dmn2={6}&Cway=3&'
+    'Cfp=1&Czu=2&S.x=101&S.y=19&S=%E6%A4%9C%E7%B4%A2&Csg=1'.format(
+        encode(_from), encode(_to), "{0:%Y%m}".format(now), now.day,
+        now.hour, str(now.minute)[0], str(now.minute)[1]
+    )
+
     response = requests.get(url)
     parser = LastTrainParser()
     parser.feed(response.text)
