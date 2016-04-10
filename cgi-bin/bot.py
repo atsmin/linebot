@@ -68,6 +68,7 @@ def reply(user, result):
 
 user, (_from, _to) = receive()
 reply(user, check(_from, _to))
+print('Done')
 
 # if __name__ == '__main__':
 #     print(check('渋谷', '鶯谷'))
