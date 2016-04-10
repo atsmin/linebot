@@ -39,9 +39,9 @@ def check(_from, _to):
 
     encode = urllib.parse.quote
     now = datetime.now()
+    minute = str(now.minute).zfill(2)
     url = 'http://www.jorudan.co.jp/norikae/cgi/nori.cgi?rf=top&eok1=&eok2=R-&pg=0&eki1={}&Cmap1=&eki2={}&Dym={}&Ddd={}&Dhh={}&Dmn1={}&Dmn2={}&Cway=3&Cfp=1&Czu=2&S.x=101&S.y=19&S=%E6%A4%9C%E7%B4%A2&Csg=1'.format(
-        encode(_from), encode(_to), "{0:%Y%m}".format(now), now.day,
-        now.hour, str(now.minute)[0], str(now.minute)[1]
+        encode(_from), encode(_to), "{0:%Y%m}".format(now), now.day, now.hour, minute[0], minute[1]
     )
     print(url)
 
@@ -67,13 +67,14 @@ def reply(user, result):
         'X-Line-Trusted-User-With-ACL': MID
     }
     values = {
-        'to': user,
+        'to': [user],
         'toChannel': 1383378250,  # Fixed value
         'eventType': "138311608800106203",  # Fixed value
         'content': result,
     }
     proxies = {'http': PROXY, 'https': PROXY}
-    data = urllib.parse.urlencode(values).encode('utf-8')
+    data = json.dumps(values).encode('utf-8')
+    print(data)
     response = requests.post(url, data=data, headers=headers, proxies=proxies)
     print(response.text)
 
