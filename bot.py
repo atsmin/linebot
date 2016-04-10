@@ -73,7 +73,10 @@ def reply(user, result):
 @app.route('/', methods=['POST'])
 def main():
     user, (_from, _to) = receive()
-    reply(user, check(_from, _to))
+    print(user, _from, _to)
+    ret = check(_from, _to)
+    print(ret)
+    reply(user, ret)
     return 'Done'
 
 if __name__ == '__main__':
