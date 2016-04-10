@@ -73,7 +73,8 @@ def reply(user, result):
         'content': {
             "contentType": 1,
             "toType": 1,
-            "text": result
+            "text": 'hi'
+            # "text": result
         }
     }
     proxies = {'http': PROXY, 'https': PROXY}
@@ -85,7 +86,6 @@ def reply(user, result):
 
 @app.route('/', methods=['POST'])
 def main():
-    print(CID, CS, MID, PROXY)
     user, (_from, _to) = receive()
     print(user, _from, _to)
     result = check(_from, _to)
