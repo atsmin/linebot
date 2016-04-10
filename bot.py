@@ -70,7 +70,11 @@ def reply(user, result):
         'to': [user],
         'toChannel': 1383378250,  # Fixed value
         'eventType': "138311608800106203",  # Fixed value
-        'content': result,
+        'content': {
+            "contentType": 1,
+            "toType": 1,
+            "text": result
+        }
     }
     proxies = {'http': PROXY, 'https': PROXY}
     data = json.dumps(values)
