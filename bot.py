@@ -88,9 +88,9 @@ def main():
     print(CID, CS, MID, PROXY)
     user, (_from, _to) = receive()
     print(user, _from, _to)
-    ret = check(_from, _to)
-    print(ret)
-    reply(user, ret)
+    result = check(_from, _to)
+    print(result)
+    reply(user, result)
     return 'Done'
 
 if __name__ == '__main__':
