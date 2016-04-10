@@ -74,7 +74,8 @@ def reply(user, result):
     }
     proxies = {'http': PROXY, 'https': PROXY}
     data = urllib.parse.urlencode(values).encode('utf-8')
-    requests.post(url, data=data, headers=headers, proxies=proxies)
+    response = requests.post(url, data=data, headers=headers, proxies=proxies)
+    print(response.text)
 
 
 @app.route('/', methods=['POST'])
