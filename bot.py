@@ -1,19 +1,20 @@
-#!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
 import os
-import sys
 import json
 import urllib.parse
 from html.parser import HTMLParser
 
 import requests
+import flask
 
 # from config import CID, CS, MID
 CID = os.environ.get('CID')
 CS = os.environ.get('CS')
 MID = os.environ.get('MID')
 PROXY = os.environ.get('PROXY')
+
+app = flask.Flask(__name__)
 
 
 def check(_from, _to):
@@ -45,7 +46,7 @@ def check(_from, _to):
 
 
 def receive():
-    data = json.loads(sys.stdin.read())
+    data = json.loads(flask.request.data.decode('utf-8'))
     result = data['result'][0]
     return result['from'], result['content']['text'].split('から')
 
@@ -69,10 +70,11 @@ def reply(user, result):
     requests.post(url, data=data, headers=headers, proxies=proxies)
 
 
-user, (_from, _to) = receive()
-reply(user, check(_from, _to))
-print('Done')
+@app.route('/', methods=['POST'])
+def main():
+    user, (_from, _to) = receive()
+    reply(user, check(_from, _to))
+    return 'Done'
 
-# if __name__ == '__main__':
-#     print(check('渋谷', '鶯谷'))
-#     print(check('池袋', '上野'))
+if __name__ == '__main__':
+    app.run(port=os.environ.get('PORT', 5000))

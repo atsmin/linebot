@@ -1,1 +1,1 @@
-web: python -m http.server --cgi $PORT
+web: python bot.py
