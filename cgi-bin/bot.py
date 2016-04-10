@@ -36,9 +36,9 @@ def check(_from, _to):
 
     encode = urllib.parse.quote
     url = 'http://www.jorudan.co.jp/norikae/cgi/nori.cgi?rf=top&eok1=&eok2=R-&pg=0&eki1={}&Cmap1=&eki2={}&Dym=201604&Ddd=9&Dhh=7&Dmn1=4&Dmn2=4&Cway=3&Cfp=1&Czu=2&S.x=101&S.y=19&S=%E6%A4%9C%E7%B4%A2&Csg=1'.format(encode(_from), encode(_to))
-    data = requests.get(url)
+    response = requests.get(url)
     parser = LastTrainParser()
-    parser.feed(data.read().decode("utf-8"))
+    parser.feed(response.text.decode("utf-8"))
     parser.result.insert(0, '→'.join([_from, _to]) + ' 最終電車')
     return '\n'.join(parser.result)
 
