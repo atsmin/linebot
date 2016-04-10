@@ -55,7 +55,7 @@ def check(_from, _to):
 def receive():
     data = json.loads(flask.request.data.decode('utf-8'))
     result = data['result'][0]
-    return result['from'], result['content']['text'].split('から')
+    return result['content']['from'], result['content']['text'].split('から')
 
 
 def reply(user, result):
