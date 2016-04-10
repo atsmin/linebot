@@ -73,8 +73,7 @@ def reply(user, result):
         'content': {
             "contentType": 1,
             "toType": 1,
-            "text": 'hi'
-            # "text": result
+            "text": result
         }
     }
     proxies = {'http': PROXY, 'https': PROXY}
