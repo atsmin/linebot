@@ -78,7 +78,7 @@ def reply(user, result):
         }
     }
     proxies = {'http': PROXY, 'https': PROXY}
-    data = json.dumps(values)
+    data = json.dumps(values).encode('utf-8')
     print(data)
     response = requests.post(url, data=data, headers=headers, proxies=proxies)
     print(response.status_code)
