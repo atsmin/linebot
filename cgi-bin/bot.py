@@ -63,7 +63,7 @@ def reply(user, result):
         'content': result,
     }
     data = urllib.parse.urlencode(values).encode('utf-8')
-    urllib.request.urlopen(url, data, headers)
+    urllib.request.urlopen(url, data, headers, timeout=30)
 
 
 user, (_from, _to) = receive()
