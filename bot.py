@@ -81,6 +81,7 @@ def reply(user, result):
     data = json.dumps(values)
     print(data)
     response = requests.post(url, data=data, headers=headers, proxies=proxies)
+    print(response.status_code)
     print(response.text)
 
 
