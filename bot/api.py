@@ -51,13 +51,13 @@ def check_last_train(_from, _to):
 
     encode = urllib.parse.quote
     now = datetime.now()
-    minute = str(now.minute).zfill(2)
-    url = 'http://www.jorudan.co.jp/norikae/cgi/nori.cgi?rf=top&eok1=&eok2=R-&pg=0&eki1={}&Cmap1=&eki2={}&Dym={}&Ddd={}&Dhh={}&Dmn1={}&Dmn2={}&Cway=3&Cfp=1&Czu=2&S.x=101&S.y=19&S=%E6%A4%9C%E7%B4%A2&Csg=1'.format(
-        encode(_from), encode(_to), "{0:%Y%m}".format(now), now.day, now.hour, minute[0], minute[1]
+    url = 'http://www.jorudan.co.jp/norikae/cgi/nori.cgi?Sok=%E6%B1%BA+%E5%AE%9A&eki1={}&eok1=R-&eki2={}&eok2=R-&eki3=&eok3=&eki4=&eok4=&eki5=&eok5=&eki6=&eok6=&rf=nr&pg=0&Dym={}&Ddd={}&Dhh={}&Dmn={}&Cway=3&C1=0&C2=0&C3=0&C4=0&C6=2&Cmap1=&Cfp=1&Czu=2'.format(
+        encode(_from), encode(_to), "{0:%Y%m}".format(now), now.day, now.hour, now.minute
     )
     print(url)
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; Touch; .NET4.0E; .NET4.0C; .NET CLR 3.5.30729; .NET CLR 2.0.50727; .NET CLR 3.0.30729; Tablet PC 2.0; rv:11.0) like Gecko'}
 
-    response = requests.get(url)
+    response = requests.get(url, headers=headers)
     parser = LastTrainParser()
     parser.feed(response.text)
     parser.result.insert(0, '→'.join([_from, _to]) + ' 最終電車')
