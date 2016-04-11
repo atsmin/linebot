@@ -2,6 +2,7 @@
 
 import os
 import json
+import random
 import urllib.parse
 from html.parser import HTMLParser
 from datetime import datetime
@@ -40,13 +41,20 @@ def check_last_train(_from, _to):
             if self.found and data != '\n':
                 self.result.append(data)
 
+    mood = [
+        '乗り遅れないようにね～',
+        '帰り気をつけてね～',
+        '飲み過ぎないでね～',
+        '歩きスマホはやめてね～',
+        'またね～',
+    ]
     message = '''調べてきたよ！
 
 {}
 {}
 
 だって！
-乗り遅れないようにね～
+{}
     '''
 
     encode = urllib.parse.quote
@@ -61,4 +69,6 @@ def check_last_train(_from, _to):
     parser = LastTrainParser()
     parser.feed(response.text)
     parser.result.insert(0, '→'.join([_from, _to]) + ' 最終電車')
-    return message.format('\n'.join(parser.result), shorten_url(url))
+    return message.format(
+        '\n'.join(parser.result), shorten_url(url), random.choice(mood)
+    )
