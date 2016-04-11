@@ -26,8 +26,7 @@ def check_last_train(_from, _to):
             if self.found and data != '\n':
                 self.result.append(data)
 
-    message = '''
-調べてきたよ！
+    message = '''調べてきたよ！
 
 {}
 
