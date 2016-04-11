@@ -1,1 +1,1 @@
-web: gunicorn bot:app --log-file -
+web: gunicorn --pythonpath bot run:app --log-file -
