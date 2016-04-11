@@ -26,6 +26,15 @@ def check_last_train(_from, _to):
             if self.found and data != '\n':
                 self.result.append(data)
 
+    message = '''
+調べてきたよ！
+
+{}
+
+だって！
+乗り遅れないようにね～
+    '''
+
     encode = urllib.parse.quote
     now = datetime.now()
     minute = str(now.minute).zfill(2)
@@ -38,4 +47,4 @@ def check_last_train(_from, _to):
     parser = LastTrainParser()
     parser.feed(response.text)
     parser.result.insert(0, '→'.join([_from, _to]) + ' 最終電車')
-    return '\n'.join(parser.result)
+    return message.format('\n'.join(parser.result))
