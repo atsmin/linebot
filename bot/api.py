@@ -1,10 +1,24 @@
 # -*- coding:utf-8 -*-
 
+import os
+import json
 import urllib.parse
 from html.parser import HTMLParser
 from datetime import datetime
 
 import requests
+
+
+KEY = os.environ['KEY']
+
+
+def shorten_url(url):
+    url = 'https://www.googleapis.com/urlshortener/v1/url?key={}'.format(KEY)
+    headers = {'Content-Type': 'application/json'}
+    values = {'longUrl': url}
+    data = json.dumps(values).encode('utf-8')
+    response = requests.post(url, data=data, headers=headers)
+    return json.loads(response.text)['id']
 
 
 def check_last_train(_from, _to):
@@ -29,6 +43,7 @@ def check_last_train(_from, _to):
     message = '''調べてきたよ！
 
 {}
+{}
 
 だって！
 乗り遅れないようにね～
@@ -46,4 +61,4 @@ def check_last_train(_from, _to):
     parser = LastTrainParser()
     parser.feed(response.text)
     parser.result.insert(0, '→'.join([_from, _to]) + ' 最終電車')
-    return message.format('\n'.join(parser.result))
+    return message.format('\n'.join(parser.result), shorten_url(url))
