@@ -4,4 +4,4 @@
 
 ![画面キャプチャ](https://raw.githubusercontent.com/aminami1127/linebot/master/images/capture.jpg)
 
-![QRコード](https://raw.githubusercontent.com/aminami1127/linebot/master/images/capture.jpg)
+![QRコード](https://raw.githubusercontent.com/aminami1127/linebot/master/images/qr_code.jpg)
