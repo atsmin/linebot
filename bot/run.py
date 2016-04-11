@@ -12,9 +12,8 @@ app = flask.Flask(__name__)
 
 @app.route('/', methods=['POST'])
 def main():
-    user, (_from, _to) = receive()
-    print(user, _from, _to)
-    result = check_last_train(_from, _to)
+    user, text = receive()
+    result = check_last_train(*text.split('から'))
     print(result)
     send(user, result)
     return 'Done'

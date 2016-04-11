@@ -16,7 +16,7 @@ PROXY = os.environ.get('PROXY')
 def receive():
     data = json.loads(flask.request.data.decode('utf-8'))
     content = data['result'][0]['content']
-    return content['from'], content['text'].split('から')
+    return content['from'], content['text']
 
 
 def send(user, text):
