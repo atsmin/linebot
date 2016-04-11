@@ -12,10 +12,10 @@ import requests
 KEY = os.environ['KEY']
 
 
-def shorten_url(url):
+def shorten_url(long_url):
     url = 'https://www.googleapis.com/urlshortener/v1/url?key={}'.format(KEY)
     headers = {'Content-Type': 'application/json'}
-    values = {'longUrl': url}
+    values = {'longUrl': long_url}
     data = json.dumps(values).encode('utf-8')
     response = requests.post(url, data=data, headers=headers)
     return json.loads(response.text)['id']
