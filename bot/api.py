@@ -2,6 +2,7 @@
 
 import os
 import json
+import pytz
 import random
 import urllib.parse
 from html.parser import HTMLParser
@@ -41,24 +42,24 @@ def check_last_train(_from, _to):
             if self.found and data != '\n':
                 self.result.append(data)
 
-    mood = [
-        '乗り遅れないようにね～',
-        '帰り気をつけてね～',
-        '飲み過ぎないでね～',
-        '歩きスマホはやめてね～',
-        'またね～',
-    ]
-    message = '''調べてきたよ！
+    template = '''調べてきたよ！
 
 {}
 {}
 
 だって！
-{}
-    '''
+''' + random.choice([
+        '乗り遅れないようにね～',
+        '帰り気をつけてね～',
+        '飲み過ぎないでね～',
+        '歩きスマホはやめてね～',
+        'またね～',
+        '今日もお疲れ様～',
+    ])
 
     encode = urllib.parse.quote
-    now = datetime.now()
+    # UTC to JST
+    now = datetime.now().replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Asia/Tokyo'))
     url = 'http://www.jorudan.co.jp/norikae/cgi/nori.cgi?Sok=%E6%B1%BA+%E5%AE%9A&eki1={}&eok1=R-&eki2={}&eok2=R-&eki3=&eok3=&eki4=&eok4=&eki5=&eok5=&eki6=&eok6=&rf=nr&pg=0&Dym={}&Ddd={}&Dhh={}&Dmn={}&Cway=3&C1=0&C2=0&C3=0&C4=0&C6=2&Cmap1=&Cfp=1&Czu=2'.format(
         encode(_from), encode(_to), "{0:%Y%m}".format(now), now.day, now.hour, now.minute
     )
@@ -69,6 +70,4 @@ def check_last_train(_from, _to):
     parser = LastTrainParser()
     parser.feed(response.text)
     parser.result.insert(0, '→'.join([_from, _to]) + ' 最終電車')
-    return message.format(
-        '\n'.join(parser.result), shorten_url(url), random.choice(mood)
-    )
+    return template.format('\n'.join(parser.result), shorten_url(url))
