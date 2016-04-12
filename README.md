@@ -1,4 +1,4 @@
-# linebot
+# 終電君
 
 終電の時刻を調べてくれるLINE BOTです。FlaskとHerokuで動かしてます。
 
