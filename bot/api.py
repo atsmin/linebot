@@ -25,7 +25,8 @@ def shorten_url(long_url):
 def make_message(text):
     sep = 'から'
 
-    template = '''調べてきたよ！
+    template = '''\
+調べてきたよ！
 
 {}
 {}
@@ -40,13 +41,15 @@ def make_message(text):
         '今日もお疲れ様～',
     ])
 
-    error1 = '''ごめんね、よく分からないや
+    error1 = '''\
+ごめんね、よく分からないや
 
 ◯◯から△△
 
 みたいに終電を調べたい駅名を教えてね！'''
 
-    error2 = '''ごめんね、
+    error2 = '''\
+ごめんね、
 調べたんだけど駅が見つからないや
 駅名があってるか確認してね！'''
 
