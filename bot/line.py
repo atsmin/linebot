@@ -38,7 +38,5 @@ def send(user, text):
     }
     proxies = {'http': PROXY, 'https': PROXY}
     data = json.dumps(values).encode('utf-8')
-    print(data)
     response = requests.post(url, data=data, headers=headers, proxies=proxies)
-    print(response.status_code)
-    print(response.text)
+    return response
