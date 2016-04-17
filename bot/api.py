@@ -41,14 +41,14 @@ def make_message(text):
         '今日もお疲れ様～',
     ])
 
-    error1 = '''\
+    invalid = '''\
 ごめんね、よく分からないや
 
 ◯◯から△△
 
 みたいに終電を調べたい駅名を教えてね！'''
 
-    error2 = '''\
+    not_found = '''\
 ごめんね、
 調べたんだけど駅が見つからないや
 駅名があってるか確認してね！'''
@@ -57,11 +57,11 @@ def make_message(text):
         _from, _to = text.split(sep)
         result, url = check_last_train(_from, _to)
         if len(result) == 1:
-            return error2
+            return not_found
         else:
             return template.format('\n'.join(result), shorten_url(url))
     except ValueError:
-        return error1
+        return invalid
 
 
 def check_last_train(_from, _to):
