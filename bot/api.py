@@ -76,10 +76,14 @@ def check_last_train(_from, _to):
 
     response = requests.get(url, headers=headers)
     soup = BeautifulSoup(response.text, 'html.parser')
-    result = [soup.h2.string.replace('\n', '') + ' 最終電車'] if soup.h2 else None
-    if result:
-        data = [
-            td.string for td in soup.find(id='Bk_list_tbody').find('tr').find_all('td') if td.string
-        ]
-        result.extend(data)
+    try:
+        result = [soup.h2.string.replace('\n', '') + ' 最終電車'] if soup.h2 else None
+        if result:
+            data = [
+                td.string for td in soup.find(id='Bk_list_tbody').find('tr').find_all('td')
+                if td.string
+            ]
+            result.extend(data)
+    except AttributeError:
+        result = None
     return result, url
