@@ -6,7 +6,7 @@ from api import make_message
 
 class LastTrainMessageTest(unittest.TestCase):
 
-    def test_normal_case(self):
+    def test_normal(self):
         """正しい入力値の場合は正常に終電時刻を取得できること"""
         text = '上野から鶯谷'
         result = make_message(text)
