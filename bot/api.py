@@ -50,7 +50,7 @@ def make_message(text):
 
     not_found = '''\
 ごめんね、
-調べたんだけど駅が見つからないや
+調べたんだけど経路が見つからないや
 駅名があってるか確認してね！'''
 
     try:
@@ -77,13 +77,12 @@ def check_last_train(_from, _to):
     response = requests.get(url, headers=headers)
     soup = BeautifulSoup(response.text, 'html.parser')
     try:
-        result = [soup.h2.string.replace('\n', '') + ' 最終電車'] if soup.h2 else None
-        if result:
-            data = [
-                td.string for td in soup.find(id='Bk_list_tbody').find('tr').find_all('td')
-                if td.string
-            ]
-            result.extend(data)
+        result = [soup.h2.string.replace('\n', '') + ' 最終電車']
+        data = [
+            td.string for td in soup.find(id='Bk_list_tbody').find('tr').find_all('td')
+            if td.string
+        ]
+        result.extend(data)
     except AttributeError:
         result = None
     return result, url

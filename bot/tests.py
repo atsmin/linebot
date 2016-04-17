@@ -31,7 +31,17 @@ class LastTrainMessageTest(unittest.TestCase):
         result = make_message(text)
         expected = '''\
 ごめんね、
-調べたんだけど駅が見つからないや
+調べたんだけど経路が見つからないや
+駅名があってるか確認してね！'''
+        assert result == expected
+
+    def test_same_name(self):
+        """同じ駅名が入力された場合もエラーにならないこと"""
+        text = '鶯谷から鶯谷'
+        result = make_message(text)
+        expected = '''\
+ごめんね、
+調べたんだけど経路が見つからないや
 駅名があってるか確認してね！'''
         assert result == expected
 
