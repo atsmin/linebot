@@ -4,10 +4,10 @@ import json
 import pytz
 import random
 import urllib.parse
-from html.parser import HTMLParser
 from datetime import datetime
 
 import requests
+from bs4 import BeautifulSoup
 
 
 KEY = os.environ['KEY']
@@ -56,43 +56,30 @@ def make_message(text):
     try:
         _from, _to = text.split(sep)
         result, url = check_last_train(_from, _to)
-        if len(result) == 1:
-            return not_found
-        else:
+        if result:
             return template.format('\n'.join(result), shorten_url(url))
+        else:
+            return not_found
     except ValueError:
         return invalid
 
 
 def check_last_train(_from, _to):
-    class LastTrainParser(HTMLParser):
-        def __init__(self):
-            super().__init__()
-            self.found = False
-            self.result = []
-
-        def handle_starttag(self, tag, attrs):
-            if dict(attrs).get('id') == 'Bk_list_tbody':
-                self.found = True
-
-        def handle_endtag(self, tag):
-            if self.found and tag == 'tr':
-                self.found = False
-
-        def handle_data(self, data):
-            if self.found and data != '\n':
-                self.result.append(data)
-
-    encode = urllib.parse.quote
     # UTC to JST
     now = datetime.now().replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Asia/Tokyo'))
+
+    encode = urllib.parse.quote
     url = 'http://www.jorudan.co.jp/norikae/cgi/nori.cgi?Sok=%E6%B1%BA+%E5%AE%9A&eki1={}&eok1=R-&eki2={}&eok2=R-&eki3=&eok3=&eki4=&eok4=&eki5=&eok5=&eki6=&eok6=&rf=nr&pg=0&Dym={}&Ddd={}&Dhh={}&Dmn={}&Cway=3&C1=0&C2=0&C3=0&C4=0&C6=2&Cmap1=&Cfp=1&Czu=2'.format(
         encode(_from), encode(_to), "{0:%Y%m}".format(now), now.day, now.hour, now.minute
     )
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; Touch; .NET4.0E; .NET4.0C; .NET CLR 3.5.30729; .NET CLR 2.0.50727; .NET CLR 3.0.30729; Tablet PC 2.0; rv:11.0) like Gecko'}
 
     response = requests.get(url, headers=headers)
-    parser = LastTrainParser()
-    parser.feed(response.text)
-    parser.result.insert(0, '→'.join([_from, _to]) + ' 最終電車')
-    return parser.result, url
+    soup = BeautifulSoup(response.text, 'html.parser')
+    result = [soup.h2.string.replace('\n', '') + ' 最終電車'] if soup.h2 else None
+    if result:
+        data = [
+            td.string for td in soup.find(id='Bk_list_tbody').find('tr').find_all('td') if td.string
+        ]
+        result.extend(data)
+    return result, url
