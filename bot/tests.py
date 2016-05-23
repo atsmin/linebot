@@ -1,5 +1,7 @@
 # -*- coding:utf-8 -*-
 import unittest
+from unittest import mock
+from datetime import datetime
 
 from api import make_message
 
@@ -44,6 +46,17 @@ class LastTrainMessageTest(unittest.TestCase):
 調べたんだけど経路が見つからないや
 駅名があってるか確認してね！'''
         assert result == expected
+
+    @mock.patch('api.now', datetime(2016, 5, 24, 2, 0))
+    @mock.patch('api.to_jst', lambda x: x)
+    def test_already_left(self):
+        """既に終電がないときは始発の時間を調べて返すこと"""
+        text = '渋谷から鶯谷'
+        result = make_message(text)
+        assert '渋谷→鶯谷' in result
+        assert '経路1' in result
+        assert '始発の時間' in result
+
 
 if __name__ == '__main__':
     unittest.main()

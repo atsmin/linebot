@@ -12,6 +12,10 @@ from bs4 import BeautifulSoup
 
 KEY = os.environ['KEY']
 
+# UTC to JST
+to_jst = lambda d: d.replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Asia/Tokyo'))
+now = to_jst(datetime.now())
+
 
 def shorten_url(long_url):
     url = 'https://www.googleapis.com/urlshortener/v1/url?key={}'.format(KEY)
@@ -57,20 +61,32 @@ def make_message(text):
         _from, _to = text.split(sep)
         result, url = check_last_train(_from, _to)
         if result:
+            try:
+                time = datetime.strptime(
+                    result[2].split(' → ')[0][:-1], '%m/%d %H:%M'
+                ).replace(year=now.year)
+            except ValueError:
+                pass
+            else:
+                # If the last train has already left, check the next first train instead
+                if 0 <= now.hour < 6 and (time - now).seconds // 3600 > 12:
+                    result, url = check_last_train(_from, _to, firstTrain=True)
+                    result.insert(0, 'ごめんね、もう終電なかったから始発の時間だよ！')
+
             return template.format('\n'.join(result), shorten_url(url))
+
         else:
             return not_found
+
     except ValueError:
         return invalid
 
 
-def check_last_train(_from, _to):
-    # UTC to JST
-    now = datetime.now().replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Asia/Tokyo'))
-
+def check_last_train(_from, _to, firstTrain=False):
+    mode = 2 if firstTrain else 3
     encode = urllib.parse.quote
-    url = 'http://www.jorudan.co.jp/norikae/cgi/nori.cgi?Sok=%E6%B1%BA+%E5%AE%9A&eki1={}&eok1=R-&eki2={}&eok2=R-&eki3=&eok3=&eki4=&eok4=&eki5=&eok5=&eki6=&eok6=&rf=nr&pg=0&Dym={}&Ddd={}&Dhh={}&Dmn={}&Cway=3&C1=0&C2=0&C3=0&C4=0&C6=2&Cmap1=&Cfp=1&Czu=2'.format(
-        encode(_from), encode(_to), "{0:%Y%m}".format(now), now.day, now.hour, now.minute
+    url = 'http://www.jorudan.co.jp/norikae/cgi/nori.cgi?Sok=%E6%B1%BA+%E5%AE%9A&eki1={}&eok1=R-&eki2={}&eok2=R-&eki3=&eok3=&eki4=&eok4=&eki5=&eok5=&eki6=&eok6=&rf=nr&pg=0&Dym={}&Ddd={}&Dhh={}&Dmn={}&Cway={}&C1=0&C2=0&C3=0&C4=0&C6=2&Cmap1=&Cfp=1&Czu=2'.format(
+        encode(_from), encode(_to), "{0:%Y%m}".format(now), now.day, now.hour, now.minute, mode
     )
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; Touch; .NET4.0E; .NET4.0C; .NET CLR 3.5.30729; .NET CLR 2.0.50727; .NET CLR 3.0.30729; Tablet PC 2.0; rv:11.0) like Gecko'}
 
