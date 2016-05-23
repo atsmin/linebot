@@ -69,7 +69,7 @@ def make_message(text):
             try:
                 time = datetime.strptime(
                     result[2].split(' → ')[0][:-1], '%m/%d %H:%M'
-                ).replace(year=now.year)
+                ).replace(year=now.year, tzinfo=pytz.timezone('Asia/Tokyo'))
             except ValueError:
                 pass
             else:

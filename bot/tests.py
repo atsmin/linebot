@@ -2,13 +2,14 @@
 import unittest
 from unittest import mock
 from datetime import datetime
+import pytz
 
 from api import make_message
 
 
 class LastTrainMessageTest(unittest.TestCase):
 
-    @mock.patch('api.now', datetime(2016, 5, 24, 20, 0))
+    @mock.patch('api.now', datetime(2016, 5, 24, 20, 0, tzinfo=pytz.timezone('Asia/Tokyo')))
     @mock.patch('api.to_jst', lambda x: x)
     def test_normal(self):
         """正しい入力値の場合は正常に終電時刻を取得できること"""
@@ -52,7 +53,7 @@ class LastTrainMessageTest(unittest.TestCase):
 駅名があってるか確認してね！'''
         assert result == expected
 
-    @mock.patch('api.now', datetime(2016, 5, 24, 23, 30))
+    @mock.patch('api.now', datetime(2016, 5, 24, 23, 30, tzinfo=pytz.timezone('Asia/Tokyo')))
     @mock.patch('api.to_jst', lambda x: x)
     def test_already_left1(self):
         """既に終電がないときは始発の時間を調べて返すこと(1)"""
@@ -62,7 +63,7 @@ class LastTrainMessageTest(unittest.TestCase):
         assert '経路1' in result
         assert '始発の時間' in result
 
-    @mock.patch('api.now', datetime(2016, 5, 25, 2, 0))
+    @mock.patch('api.now', datetime(2016, 5, 25, 2, 0, tzinfo=pytz.timezone('Asia/Tokyo')))
     @mock.patch('api.to_jst', lambda x: x)
     def test_already_left2(self):
         """既に終電がないときは始発の時間を調べて返すこと(2)"""
