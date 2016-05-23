@@ -14,7 +14,6 @@ KEY = os.environ['KEY']
 
 # UTC to JST
 to_jst = lambda d: d.replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Asia/Tokyo'))
-now = to_jst(datetime.now())
 
 
 def shorten_url(long_url):
@@ -26,7 +25,7 @@ def shorten_url(long_url):
     return json.loads(response.text)['id']
 
 
-def make_message(text):
+def make_message(text, now=to_jst(datetime.now())):
     sep = 'から'
 
     template = '''\
@@ -62,7 +61,7 @@ def make_message(text):
     except ValueError:
         return invalid
     else:
-        result, url = check_last_train(_from, _to)
+        result, url = check_last_train(_from, _to, now)
         if not result:
             return not_found
         else:
@@ -76,13 +75,13 @@ def make_message(text):
                 # If the last train has already left, check the next first train instead.
                 # Jorudan returns the day's last train.
                 if time <= now or (0 <= now.hour < 6 and (time - now).total_seconds() // 3600 > 12):
-                    result, url = check_last_train(_from, _to, firstTrain=True)
+                    result, url = check_last_train(_from, _to, now, firstTrain=True)
                     result.insert(0, 'ごめんね、もう終電なかったから始発の時間だよ！')
 
             return template.format('\n'.join(result), shorten_url(url))
 
 
-def check_last_train(_from, _to, firstTrain=False):
+def check_last_train(_from, _to, now=to_jst(datetime.now()), firstTrain=False):
     mode = 2 if firstTrain else 3
     encode = urllib.parse.quote
     url = 'http://www.jorudan.co.jp/norikae/cgi/nori.cgi?Sok=%E6%B1%BA+%E5%AE%9A&eki1={}&eok1=R-&eki2={}&eok2=R-&eki3=&eok3=&eki4=&eok4=&eki5=&eok5=&eki6=&eok6=&rf=nr&pg=0&Dym={}&Ddd={}&Dhh={}&Dmn={}&Cway={}&C1=0&C2=0&C3=0&C4=0&C6=2&Cmap1=&Cfp=1&Czu=2'.format(
