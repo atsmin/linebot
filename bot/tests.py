@@ -65,7 +65,7 @@ class LastTrainMessageTest(unittest.TestCase):
     def test_already_left2(self):
         """既に終電がないときは始発の時間を調べて返すこと(2)"""
         text = '渋谷から鶯谷'
-        result = make_message(text, datetime(2016, 5, 24, 0, 30, tzinfo=pytz.timezone('Asia/Tokyo')))
+        result = make_message(text, datetime(2016, 5, 25, 0, 30, tzinfo=pytz.timezone('Asia/Tokyo')))
         assert '渋谷→鶯谷' in result
         assert '経路1' in result
         assert '始発の時間' in result
