@@ -75,7 +75,7 @@ def make_message(text):
             else:
                 # If the last train has already left, check the next first train instead.
                 # Jorudan returns the day's last train.
-                if time <= now or (0 <= now.hour < 6 and (time - now).seconds // 3600 > 12):
+                if time <= now or (0 <= now.hour < 6 and (time - now).total_seconds() // 3600 > 12):
                     result, url = check_last_train(_from, _to, firstTrain=True)
                     result.insert(0, 'ごめんね、もう終電なかったから始発の時間だよ！')
 
