@@ -59,8 +59,13 @@ def make_message(text):
 
     try:
         _from, _to = text.split(sep)
+    except ValueError:
+        return invalid
+    else:
         result, url = check_last_train(_from, _to)
-        if result:
+        if not result:
+            return not_found
+        else:
             try:
                 time = datetime.strptime(
                     result[2].split(' → ')[0][:-1], '%m/%d %H:%M'
@@ -74,12 +79,6 @@ def make_message(text):
                     result.insert(0, 'ごめんね、もう終電なかったから始発の時間だよ！')
 
             return template.format('\n'.join(result), shorten_url(url))
-
-        else:
-            return not_found
-
-    except ValueError:
-        return invalid
 
 
 def check_last_train(_from, _to, firstTrain=False):
