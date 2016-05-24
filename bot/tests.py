@@ -1,12 +1,17 @@
 # -*- coding:utf-8 -*-
 import unittest
+from unittest import mock
 from datetime import datetime
 
 from api import make_message
 
 
 class LastTrainMessageTest(unittest.TestCase):
+    localzone_mock = mock.MagicMock(
+        return_value=mock.MagicMock(zone='Asia/Tokyo')
+    )
 
+    @mock.patch('api.get_localzone', localzone_mock)
     def test_normal(self):
         """正しい入力値の場合は正常に終電時刻を取得できること"""
         text = '上野から鶯谷'
@@ -46,6 +51,7 @@ class LastTrainMessageTest(unittest.TestCase):
 駅名があってるか確認してね！'''
         assert result == expected
 
+    @mock.patch('api.get_localzone', localzone_mock)
     def test_already_left1(self):
         """既に終電がないときは始発の時間を調べて返すこと(1)"""
         text = '横浜から大宮'
@@ -54,6 +60,7 @@ class LastTrainMessageTest(unittest.TestCase):
         assert '経路1' in result
         assert '始発の時間' in result
 
+    @mock.patch('api.get_localzone', localzone_mock)
     def test_already_left2(self):
         """既に終電がないときは始発の時間を調べて返すこと(2)"""
         text = '渋谷から鶯谷'
