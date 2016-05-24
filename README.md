@@ -1,6 +1,6 @@
 # 終電君
 
-![build status](https://travis-ci.org/atsmin/linebot.svg?branch=master)
+[![build status](https://travis-ci.org/atsmin/linebot.svg?branch=master)](https://travis-ci.org/atsmin/linebot)
 
 終電の時刻を調べてくれるLINE BOTです。FlaskとHerokuで動かしてます。
 
