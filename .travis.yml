@@ -1,0 +1,12 @@
+language: python
+python:
+- "3.5"
+install: pip install -r requirements.txt
+script: nosetests bot/tests.py
+deploy:
+  provider: heroku
+  api_key:
+    secure: TbvZ7jq6z99vbuPo0abRd6M42wW2NruOxCZybsUgc9m0S1S/M2XCYrwaBlQCNLE6fYC1CDGXih9/DuUVrPOzLRYpsXlhKlP6c+O9Jp0fiGYy4ZNbxcSHKMcRvWvUZiPKBGwpa8TWKyfBQ7i5C7F1e25tUe4Dvr96+9n1eLMUqn5teKzr3KoSdzVUHoAjqGng2CsxnHvLKCbDzACOmgF4K4btcbRU6mBERnwMihVq5Cz97mzO2cHuIk97LbCPnD5RuLm8TqyfT+uHMm0IQIbh2ExiX1qcSYIUkrD3Ci86BY9juvG00XQjzNJxwrqapEpqxolvYu3BY67d4ejF7zlIljWQv9+1kr1n4/ewesTeAsKt8SaMFLf0/pZZ6a/8q/XZZU5fD6lDcQEF4SKf3qYTW7y3bWyOkp38QNN8xG9EZucb2D0FghLcvwvEgBTmFo1hV1imPgKkEsMn54SsJLHU/xL16XaLSx07hMvaLdzmTsn/3QVPjExt+ImdJLfo2ruC5T6MV/yh0H1wQ9m7fkvhAEMFSb4TFJuVnemvw0FrO8oZqq0hBGE/VA50+d9mp4GPcz6o6AC66CbuAXnj/Y8Wz2IS9Al5Hgui4k3o5SPuvH3Ad/bgn2ZR/z5XYMOJPIc4LGFFfEEcAf5HzrhqORoueaF8jlatui0JNgT0Z66YgeQ=
+  app: aqueous-beyond-73323
+  "on":
+    repo: atsmin/linebot
