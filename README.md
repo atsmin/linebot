@@ -6,4 +6,6 @@
 
 ![画面キャプチャ](https://raw.githubusercontent.com/aminami1127/linebot/master/images/capture.jpg)
 
-![QRコード](https://raw.githubusercontent.com/aminami1127/linebot/master/images/qr_code.jpg)
+<img src="http://qr-official.line.me/L/xcLgJJ0r7Y.png">
+
+<a href="https://line.me/R/ti/p/%40mcu4425y"><img height="36" border="0" alt="友だち追加" src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png"></a>
