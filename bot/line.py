@@ -12,7 +12,7 @@ PROXY = os.environ.get('PROXY')
 
 def receive():
     event = json.loads(flask.request.data.decode('utf-8'))['events'][0]
-    reply_token = event['replyToken']
+    reply_token = event.get('replyToken')
     event_type = event['type']
     if event_type == 'message':
         text = event['message']['text']
