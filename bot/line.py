@@ -12,17 +12,23 @@ PROXY = os.environ.get('PROXY')
 
 def receive():
     event = json.loads(flask.request.data.decode('utf-8'))['events'][0]
-    return event['replyToken'], event['message']['text']
+    reply_token = event['replyToken']
+    event_type = event['type']
+    if event_type == 'message':
+        text = event['message']['text']
+    else:
+        text = None
+    return reply_token, event_type, text
 
 
-def send(replyToken, text):
+def send(reply_token, text):
     url = 'https://api.line.me/v2/bot/message/reply'
     headers = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer {}'.format(TOKEN),
     }
     values = {
-        'replyToken': replyToken,
+        'replyToken': reply_token,
         'messages': [{
             "type": 'text',
             "text": text

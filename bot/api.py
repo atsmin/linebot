@@ -40,7 +40,19 @@ def shorten_url(long_url):
 
 
 @to_jst
-def make_message(text, now=datetime.now()):
+def make_message(event_type, text, now=datetime.now()):
+    if event_type == 'follow':
+        first_message = '''\
+登録ありがとうございます！
+
+◯◯から△△
+
+みたいに終電を調べたい駅名を教えて下さい、時間を調べてきます！'''
+        return first_message
+
+    elif event_type != 'message':
+        return
+
     sep = 'から'
 
     template = '''\

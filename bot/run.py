@@ -11,9 +11,10 @@ app = flask.Flask(__name__)
 
 @app.route('/', methods=['POST'])
 def main():
-    user, text = receive()
-    message = make_message(text)
-    send(user, message)
+    reply_token, event_type, text = receive()
+    message = make_message(event_type, text)
+    if message:
+        send(reply_token, message)
     return message
 
 if __name__ == '__main__':
